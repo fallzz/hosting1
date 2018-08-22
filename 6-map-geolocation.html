@@ -21,8 +21,8 @@
 <script id="code">
 
 var options = {
-    enableHighAccuracy : false,
-    maximumAge : 300000,
+    enableHighAccuracy : true,
+    maximumAge : 50000,
     timeout : 5000
 };
 
@@ -59,7 +59,7 @@ function onErrorGeolocation(e) {
 
 $(window).on("load", function() {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(onSuccessGeolocation, onErrorGeolocation, options);
+        navigator.geolocation.watchPosition(onSuccessGeolocation, onErrorGeolocation, options);
     } else {
         var center = map.getCenter();
         infowindow.setContent('<div style="padding:20px;"><h5 style="margin-bottom:5px;color:#f00;">Geolocation not supported</h5></div>');
@@ -70,7 +70,3 @@ $(window).on("load", function() {
 
 </body>
 </html>
-
-
-
-
