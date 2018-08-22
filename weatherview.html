@@ -29,10 +29,8 @@
 		var url;
 		var userLat;
 		var userLon;
-		function parseWeather() 
-		{ 	
-			if (navigator.geolocation) { // GPS를 지원하면
-				navigator.geolocation.getCurrentPosition(function(position) {
+
+		function onSuccess(position) {
 					userLat = position.coords.latitude;
 					userLon = position.coords.longitude;
 					url = "http://api.openweathermap.org/data/2.5/weather?lat=" + position.coords.latitude+"&lon=" +position.coords.longitude+ "&cnt=7&APPID=9e44eafe99830dbb2bf44b54541d339d&units=metric";
@@ -50,13 +48,23 @@
 						document.getElementById("humidity").innerHTML = "습도: " + jsonData["main"]["humidity"] + "%";
 						document.getElementById("icon").src = 'http://openweathermap.org/img/w/' + jsonData["weather"][0]["icon"] + '.png';
 					});
-				}, function(error) {
+				}
+
+		function onFailed(error) {
 				  console.error(error);
-				}, {
-				  enableHighAccuracy: false,
-				  maximumAge: 0,
-				  timeout: Infinity
-				});
+				}
+
+			
+		var options = {
+    enableHighAccuracy : true,
+    maximumAge : 50000,
+    timeout : 5000
+};
+
+		function parseWeather() 
+		{ 	
+			if (navigator.geolocation) { // GPS를 지원하면
+				navigator.geolocation.getCurrentPosition(onSuccess,onFailed ,options);
 			} else {
 				alert('GPS를 지원하지 않습니다');
 			}
