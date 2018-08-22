@@ -30,36 +30,42 @@
 		var userLat;
 		var userLon;
 
-		function onSuccess(position) {
-					userLat = position.coords.latitude;
-					userLon = position.coords.longitude;
-					url = "http://api.openweathermap.org/data/2.5/weather?lat=" + position.coords.latitude+"&lon=" +position.coords.longitude+ "&cnt=7&APPID=9e44eafe99830dbb2bf44b54541d339d&units=metric";
-					loadJSON(function(response) 
-					{
-						var jsonData = JSON.parse(response);
-						var lat = Number(jsonData["coord"]["lat"]);
-						var lon = Number(jsonData["coord"]["lon"]);
-						//document.getElementById("lat").innerHTML = "위도: " + jsonData["coord"]["lat"] + "&deg;";
-						//document.getElementById("lon").innerHTML = "경도: " + jsonData["coord"]["lon"] + "&deg;";
-						document.getElementById("locationName").innerHTML = "지역명: " + jsonData["name"];
-						//document.getElementById("todaysWeather").innerHTML = "날씨: " + jsonData["weather"][0]["main"];
-						//document.getElementById("cloudiness").innerHTML = "흐린정도: " + jsonData["clouds"]["all"] + "%";
-						document.getElementById("temperature").innerHTML = "기온: " + jsonData["main"]["temp"] +"&deg;C";
-						document.getElementById("humidity").innerHTML = "습도: " + jsonData["main"]["humidity"] + "%";
-						document.getElementById("icon").src = 'http://openweathermap.org/img/w/' + jsonData["weather"][0]["icon"] + '.png';
-					});
-				}
+	function onSuccess(position) {
+		userLat = position.coords.latitude;
+		userLon = position.coords.longitude;
+		url = "http://api.openweathermap.org/data/2.5/weather?lat=" + position.coords.latitude+"&lon=" +position.coords.longitude+ "&cnt=7&APPID=9e44eafe99830dbb2bf44b54541d339d&units=metric";
+		loadJSON(function(response) 
+		{
+			var jsonData = JSON.parse(response);
+			var lat = Number(jsonData["coord"]["lat"]);
+			var lon = Number(jsonData["coord"]["lon"]);
+			//document.getElementById("lat").innerHTML = "위도: " + jsonData["coord"]["lat"] + "&deg;";
+			//document.getElementById("lon").innerHTML = "경도: " + jsonData["coord"]["lon"] + "&deg;";
+			document.getElementById("locationName").innerHTML = "지역명: " + jsonData["name"];
+			//document.getElementById("todaysWeather").innerHTML = "날씨: " + jsonData["weather"][0]["main"];
+			//document.getElementById("cloudiness").innerHTML = "흐린정도: " + jsonData["clouds"]["all"] + "%";
+			document.getElementById("temperature").innerHTML = "기온: " + jsonData["main"]["temp"] +"&deg;C";
+			document.getElementById("humidity").innerHTML = "습도: " + jsonData["main"]["humidity"] + "%";
+			document.getElementById("icon").src = 'http://openweathermap.org/img/w/' + jsonData["weather"][0]["icon"] + '.png';
+		});
+	}
 
-		function onFailed(error) {
-				  console.error(error);
-				}
+function onFailed(error) {
+	var center = map.getCenter();
+	infowindow.setContent('<div style="padding:20px;">' +
+		'<h5 style="margin-bottom:5px;color:#f00;">Geolocation failed!</h5>'+ "latitude: "+ center.lat() +"<br />longitude: "+ center.lng() +'</div>');
+
+	infowindow.open(map, center);
+
+	alert("error"+e.code)
+	}
 
 			
-		var options = {
-    enableHighAccuracy : true,
-    maximumAge : 50000,
-    timeout : 5000
-};
+	var options = {
+		enableHighAccuracy : true,
+		maximumAge : 50000,
+		timeout : 5000
+	};
 
 		function parseWeather() 
 		{ 	
